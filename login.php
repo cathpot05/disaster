@@ -36,7 +36,7 @@ else if(isset($_POST['registerSubmit']))
 	$email = $_POST['emailTxt'];
 	$username=$_POST['usernameTxt'];
 	$password = md5($_POST['passwordTxt']);
-	echo $sql = "INSERT INTO user(studNo,name,email,username,password,status) VALUES('$studNo','$name','$email','$username','$password',1)";
+	$sql = "INSERT INTO user(studNo,name,email,username,password,status) VALUES('$studNo','$name','$email','$username','$password',1)";
 		$result = mysqli_query($con, $sql);
 		if($result)
 		{
@@ -69,7 +69,7 @@ else if(isset($_POST['registerSubmit']))
 		<!-- meta character set -->
 		<meta charset="UTF-8">
 		<!-- Site Title -->
-		<title>Travel</title>
+		<title>Disaster Prevention</title>
 
 		<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,400,300,500,600,700" rel="stylesheet"> 
 			<!--

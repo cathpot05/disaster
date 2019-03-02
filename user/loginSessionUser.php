@@ -4,7 +4,7 @@ $id=$_GET['id'];
 if(isset($_GET['id']))
 {
 	$_SESSION['userID'] = $id;
-	header('Location:dashboard/dashboard.php');
+	header('Location:dashboard/index.php');
 }
 else
 {
