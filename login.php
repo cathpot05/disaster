@@ -84,7 +84,9 @@ else if(isset($_POST['registerSubmit']))
 			<link rel="stylesheet" href="css/animate.min.css">
 			<link rel="stylesheet" href="css/owl.carousel.css">				
 			<link rel="stylesheet" href="css/main.css">
+
 		</head>
+
 		<body>	
 			<header id="header">
 				<div class="header-top">
@@ -126,7 +128,7 @@ else if(isset($_POST['registerSubmit']))
 							<div class="tab-content" id="myTabContent">
 							  <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
 								<form class="form-wrap" action="login.php" method="post">
-									<input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">									
+									<input type="text" class="form-control" name="usernameTxt" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">									
 									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
 									<button type="submit" name="loginSubmit" class="primary-btn text-uppercase" >Login</button>									
 								</form>
@@ -147,10 +149,60 @@ else if(isset($_POST['registerSubmit']))
 					</div>
 				</div>					
 			</section>
+			<br>
+			<section class="home-about-area" style="background-color: white">
+				<div class="container-fluid">
+					<div class="row align-items-center justify-content-end">
+					<div class="col-lg-6 col-md-12 home-about-right no-padding">
+							<img class="img-fluid" src="img/disaster4.jpg" alt="">
+						</div>
+						<div class="col-lg-6 col-md-12 home-about-right">
+							<h1>
+								Did not find your Package? <br>
+								Feel free to ask us. <br>
+								We‘ll make it for you
+							</h1>
+							<p>
+								inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that, as women, our behavior on the job is beyond reproach. inappropriate behavior is often laughed.
+							</p>
+							<a href="#" class="primary-btn text-uppercase">request custom price</a>
+						</div>
+						
+					</div>
+				</div>	
+			</section>
+			<br><br>
+			<section class="home-about-area" style="background-color: white">
+				<div class="container-fluid">
+					<div class="row align-items-center justify-content-end">
+					
+						<div class="col-lg-6 col-md-12 home-about-right">
+							<h1>
+								Did not find your Package? <br>
+								Feel free to ask us. <br>
+								We‘ll make it for you
+							</h1>
+							<p>
+								inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that, as women, our behavior on the job is beyond reproach. inappropriate behavior is often laughed.
+							</p>
+							<a href="#" class="primary-btn text-uppercase">request custom price</a>
+						</div>
+						<div class="col-lg-6 col-md-12 home-about-right no-padding">
+							<img class="img-fluid" src="img/fire.gif" alt="">
+						</div>
+					</div>
+				</div>	
+			</section>
+			<br>
 			<!-- End banner Area -->
 
 			<!-- End footer Area -->	
+<footer class="footer-area">
+				<div class="container">
 
+					
+				</div>
+			</footer>
 			<script src="js/vendor/jquery-2.2.4.min.js"></script>
 			<script src="js/popper.min.js"></script>
 			<script src="js/vendor/bootstrap.min.js"></script>			

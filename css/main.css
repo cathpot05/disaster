@@ -92,12 +92,13 @@ $black			: #222;
 }
 
 body {
-  color: #777777;
   font-family: "Poppins", sans-serif;
   font-size: 14px;
   font-weight: 300;
   line-height: 1.625em;
   position: relative;
+  background-color: #85adad;
+  
 }
 
 ol, ul {
@@ -3314,7 +3315,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .top-category-widget-area {
-  background-color: #f9f9ff;
+
 }
 
 .top-category-widget-area .single-cat-widget {
@@ -3323,7 +3324,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .top-category-widget-area .single-cat-widget .overlay-bg {
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.70);
   margin: 7%;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
