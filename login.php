@@ -10,7 +10,9 @@ if(isset($_POST['loginSubmit']))
 		if(mysqli_num_rows($result)>0)
 		{
 			while($row = mysqli_fetch_array($result)){
+				addLogs($con,$row['id'], 'admin', 'Logged in');
 				header("Location:admin/loginSessionAdmin.php?id=".$row['id']);
+				
 			}
 		}
 		else
@@ -20,7 +22,9 @@ if(isset($_POST['loginSubmit']))
 			if(mysqli_num_rows($result)>0)
 			{
 				while($row = mysqli_fetch_array($result)){
+					addLogs($con,$row['id'], 'user', 'Logged in');
 					header("Location:user/loginSessionUser.php?id=".$row['id']);
+					
 				}
 			}
 			else{
@@ -128,18 +132,18 @@ else if(isset($_POST['registerSubmit']))
 							<div class="tab-content" id="myTabContent">
 							  <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
 								<form class="form-wrap" action="login.php" method="post">
-									<input type="text" class="form-control" name="usernameTxt" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">									
-									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
+									<input type="text" class="form-control" name="usernameTxt" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">									
+									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password '">
 									<button type="submit" name="loginSubmit" class="primary-btn text-uppercase" >Login</button>									
 								</form>
 							  </div>
 							  <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
 								<form class="form-wrap" action="login.php" method="post">
-									<input type="text" class="form-control" name="studNoTxt" placeholder="Student No. " onfocus="this.placeholder = ''" onblur="this.placeholder = 'From '">									
-									<input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'To '">
-									<input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Start '">
-									<input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Return '">
-									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Adults '">		
+									<input type="text" class="form-control" name="studNoTxt" placeholder="Student No. " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Student No. '">									
+									<input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '">
+									<input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '">
+									<input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">
+									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password '">		
 									<button type="submit" name="registerSubmit" class="primary-btn text-uppercase" >Register</button>									
 								</form>							  	
 							  </div>

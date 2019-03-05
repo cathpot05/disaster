@@ -97,7 +97,8 @@ body {
   font-weight: 300;
   line-height: 1.625em;
   position: relative;
-  background-color: #85adad;
+  background-color: #f9f9ff;
+  background-image: url('../img/price-bg.png');
   
 }
 
@@ -1229,33 +1230,31 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 800px;
 }
 
-.progress-table .serial {
-  width: 11.83%;
-  padding-left: 30px;
+.progress-table .ID {
+  width: 10%;
 }
 
-.progress-table .country {
-  width: 28.07%;
+.progress-table .name {
+  width: 30%;
 }
 
-.progress-table .visit {
-  width: 19.74%;
+.progress-table .description {
+  width: 50%;
 }
 
-.progress-table .percentage {
-  width: 40.36%;
-  padding-right: 50px;
+.progress-table .time {
+  width: 10%;
 }
 
 .progress-table .table-head {
   display: flex;
 }
 
-.progress-table .table-head .serial, .progress-table .table-head .country, .progress-table .table-head .visit, .progress-table .table-head .percentage {
+.progress-table .table-head .id, .progress-table .table-head .name, .progress-table .table-head .description, .progress-table .table-head .time {
   color: #222222;
   line-height: 40px;
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 500px;
 }
 
 .progress-table .table-row {
@@ -3156,7 +3155,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 /*-------- start hot-deal Style  -------------*/
 /*-------- start destinations-area Style  -------------*/
 .destinations-area {
-  background: #f9f9ff;
+
 }
 
 .destinations-area .single-destinations {

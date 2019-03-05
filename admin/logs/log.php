@@ -55,7 +55,7 @@ include "../sessionAdmin.php";
 				          <li><a href="../students/student.php">Students</a></li>
 				          <li><a href="../reports/report.php">Reports</a></li>
 				          <li><a href="../logs/log.php">Activity Logs</a></li>
-				          <li class="menu-has-children"><a href="">Account</a>
+				          <li class="menu-has-children"><a href=#>Account</a>
 				            <ul>
 				              <li><a href="../updateInfo/updateinfo.php">Update Info</a></li>
 				              <li><a href="../changePassword/changePassword.php">Change Password</a></li>
@@ -70,7 +70,6 @@ include "../sessionAdmin.php";
 			</header><!-- #header -->
 
 			<!-- start banner Area -->
-			<!-- Start top-category-widget Area -->
 			<section class="relative about-banner" id="home">	
 				<div class="overlay overlay-bg"></div>
 				<div class="container">				
@@ -83,92 +82,65 @@ include "../sessionAdmin.php";
 			</section>
 			<!-- End banner Area -->				  
 
-			<section class="top-category-widget-area pt-100 pb-90">
+			<!-- Start top-category-widget Area -->
+			
+			<!-- Start top-category-widget Area -->
+			<section class="popular-destination-area section-gap pt-5 pb-0">
 				<div class="container">
-				<h1>Dashboard</h1>
+					<div class="row">
+						<div class="col-lg-6">
+							<h1>Activity Logs</h1>
+						</div>
+					</div>
 				<hr>
-				<br>
-					<div class="row">		
-						<div class="col-lg-4">
+				</div>	
+			</section>
+			<section class="destinations-area section-gap pt-0">
+				<div class="container">					
+					<div class="row">
+						<div class="col-lg-12">						
+							<table width=100% class="table table-bordered" style="background-color: white">
+								<thead>
+									<tr>
+										<th width=5% >ID</th>
+										<th width=30%>NAME</th>
+										<th width=50%>DESCRIPTION</th>
+										<th width=15%>TIME</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php
+										$sql = "SELECT *, 
+											(CASE
+												WHEN (A.userType = 'admin')
+											THEN 
+												(SELECT Z.name FROM admin Z WHERE Z.id = A.userID)
+											ELSE
+												(SELECT Z.name FROM user Z WHERE Z.id = A.userID)
+											 END
+											)As 'name'
+										FROM `logs` A";
+									$result = mysqli_query($con, $sql);
+									while($row = mysqli_fetch_array($result)){
+									?>
+									<tr>
+										<td><?php echo $row['id']; ?></td>
+										<td><?php echo $row['name']; ?></td>
+										<td><?php echo $row['description']; ?></td>
+										<td><center><?php echo date('m/d/Y',strtotime($row['dateCreated']))."<br>".date('h:i:s a',strtotime($row['dateCreated']));?></center></td>
+									</tr>
+									
+									<?php
+									}
+									
+									?>
+								</tbody>
+							</table>
 							
-							<div class="single-cat-widget">
-								<div class="content relative">
-									<div class="overlay overlay-bg"></div>
-									<a href="../videos/video.php"  style="color: inherit; text-decoration: inherit; ">
-								      <div class="thumb">
-								  		 <img class="content-image img-fluid d-block mx-auto" src="../../img/animated_video3.jpg" alt="">
-								  	  </div>
-								      <div class="content-details">
-								       
-										   <h4 class="content-title mx-auto text-uppercase">Animated Video</h4>
-										   <span></span>								        
-										   <p>Upload and Manage videos and exams</p>
-								      </div>
-									  </a>
-								</div>
-							</div>
 						</div>
-						<div class="col-lg-4">
-							<div class="single-cat-widget">
-								<div class="content relative">
-									<div class="overlay overlay-bg"></div>
-									<a href="../students/student.php"  style="color: inherit; text-decoration: inherit; "> 
-								      <div class="thumb">
-								  		 <img class="content-image img-fluid d-block mx-auto" src="../../img/student3.jpg" alt="">
-								  	  </div>
-								      <div class="content-details">
-									    
-								        <h4 class="content-title mx-auto text-uppercase">Student Info</h4>
-								        <span></span>								        
-								        <p>View student scores and details</p>
-										
-								      </div>
-								    </a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="single-cat-widget">
-								<div class="content relative">
-									<div class="overlay overlay-bg"></div>
-									 <a href="../reports/report.php"  style="color: inherit; text-decoration: inherit; "> 
-								      <div class="thumb">
-								  		 <img class="content-image img-fluid d-block mx-auto" src="../../img/report2.jpg" alt="">
-								  	  </div>
-								      <div class="content-details">
-									  
-								        <h4 class="content-title mx-auto text-uppercase">Chart and Reports</h4>
-								        <span></span>
-								        <p>View and Print multiple reports</p>
-										
-								      </div>
-									  </a>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4">
-							<div class="single-cat-widget">
-								<div class="content relative">
-									<div class="overlay overlay-bg"></div>
-								    <a href="../logs/log.php"  style="color: inherit; text-decoration: inherit; "> 
-								      <div class="thumb">
-								  		 <img class="content-image img-fluid d-block mx-auto" src="../../img/report.jpg" alt="">
-								  	  </div>
-								      <div class="content-details">
-									   
-								        <h4 class="content-title mx-auto text-uppercase">Activity Logs</h4>
-								        <span></span>
-								        <p>Track account activities</p>
-										
-								      </div>
-								    </a>
-								</div>
-							</div>
-						</div>							
 					</div>
 				</div>	
 			</section>
-			<br>
 
 			<br><br>
 			<footer class="footer-area">
@@ -188,7 +160,7 @@ include "../sessionAdmin.php";
   			<script src="../../js/easing.min.js"></script>			
 			<script src="../../js/hoverIntent.js"></script>
 			<script src="../../js/superfish.min.js"></script>	
-			<script src="../../js/jquery.ajaxchimp.min.js"></script>
+			<script src="../../js/jquery.ajaxchimp.min.js"></script>	
 			<script src="../../js/jquery.magnific-popup.min.js"></script>						
 			<script src="../../js/jquery.nice-select.min.js"></script>					
 			<script src="../../js/owl.carousel.min.js"></script>							
