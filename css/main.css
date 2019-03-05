@@ -99,6 +99,7 @@ body {
     line-height: 1.625em;
     position: relative;
     background-color: white;
+	background-image: url('../img/price-bg.png');
 }
 
 ol, ul {
@@ -3167,7 +3168,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 /*-------- start hot-deal Style  -------------*/
 /*-------- start destinations-area Style  -------------*/
 .destinations-area {
-    background: white;
+
 }
 
 .destinations-area .single-destinations {
@@ -3330,7 +3331,7 @@ body.mobile-nav-active #mobile-nav-toggle {
 }
 
 .top-category-widget-area {
-    background-color: #f9f9ff;
+   
 }
 
 .top-category-widget-area .single-cat-widget {
