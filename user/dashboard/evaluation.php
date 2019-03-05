@@ -35,7 +35,6 @@ if(mysqli_num_rows($result)>0)
     <link rel="stylesheet" href="../../css/owl.carousel.css">
     <link rel="stylesheet" href="../../css/main.css">
 </head>
-
 <body>
 <header id="header">
     <div class="header-top">
@@ -61,17 +60,6 @@ if(mysqli_num_rows($result)>0)
                     <li><a href="index.php">Dashboard</a></li>
                     <li><a href="user_videos.php">Videos</a></li>
                     <li><a href="evaluation.php">Evaluation History</a></li>
-                    <!--<li class="menu-has-children"><a href="">Pages</a>
-                        <ul>
-                            <li><a href="#">Elements</a></li>
-                            <li class="menu-has-children"><a href="">Level 2 </a>
-                                <ul>
-                                    <li><a href="#">Item One</a></li>
-                                    <li><a href="#">Item Two</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>-->
                     <li class="menu-has-children"><a href="#">Account Settings</a>
                         <ul>
                             <li><a href="#">Modify Account Details</a></li>
@@ -84,6 +72,7 @@ if(mysqli_num_rows($result)>0)
         </div>
     </div>
 </header><!-- #header -->
+
 <section class="about-banner relative">
     <div class="overlay overlay-bg"></div>
     <div class="container">
@@ -96,27 +85,67 @@ if(mysqli_num_rows($result)>0)
     </div>
 </section>
 
-<section class="home-about-area pt-20" style="background: white">
-    <div class="container-fluid">
-        <div class="row align-items-center justify-content-end">
-            <div class="col-lg-6 col-md-12 home-about-left">
-                <h1>
-                    Did not find your Package? <br>
-                    Feel free to ask us. <br>
-                    We‘ll make it for you
-                </h1>
-                <p>
-                    inappropriate behavior is often laughed off as “boys will be boys,” women face higher conduct standards especially in the workplace. That’s why it’s crucial that, as women, our behavior on the job is beyond reproach. inappropriate behavior is often laughed.
-                </p>
-                <a href="user_videos.php" class="primary-btn text-uppercase">Proceed to Videos</a>
+<section class="price-area pt-20">
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <div class="menu-content pb-70 col-lg-8">
+                <div class="title text-center">
+                    <h1 class="mb-10">History of taken exam</h1>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-12 home-about-right no-padding">
-                <img class="img-fluid" src="../../img/disaster4.jpg" alt="">
+        </div>
+        <div class="row">
+            <?php
+            $sql2 = "SELECT B.score, C.name, B.dateCreated,
+                        (SELECT COUNT(id) FROM evaluation WHERE videoID = A.videoID) AS 'question_count'
+                    FROM user_certificates A
+                    INNER JOIN user_certificates_detail B ON A.id = B.userCertID
+                    INNER JOIN video C ON A.videoID = C.id
+                    WHERE A.userID = '$userId'";
+            $result2 = mysqli_query($con, $sql2);
+            if(mysqli_num_rows($result2)>0)
+            {
+                while($row2 = mysqli_fetch_array($result2)){
+                $score = $row2['score'];
+                $title = $row2['name'];
+                $taken = $row2['dateCreated'];
+                $q_total = $row2['question_count'];
+                if($score >= ($q_total/2)){
+                 $color = "text-success";
+                 $status = "PASSED";
+                }else{
+                 $color = "text-danger";
+                  $status = "FAILED";
+                }
+            ?>
+            <div class="col-lg-4">
+                <div class="single-price">
+                    <h4 class="<?php echo $color; ?>" style="font-size: 30px"><?php echo $status; ?></h4>
+                    <ul class="price-list">
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span class="font-weight-bold">Video</span>
+                            <span><?php echo $title; ?></span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span class="font-weight-bold">Score</span>
+                            <span><?php echo $score ."/" .$q_total; ?></span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span class="font-weight-bold">Date Taken</span>
+                            <span><?php echo $taken; ?></span>
+                        </li>
+                    </ul>
+                </div>
             </div>
+            <?php
+            }
+            }
+            ?>
         </div>
     </div>
 </section>
-<footer class="footer-area section-gap"></footer>
+<footer class="footer-area section-gap pt-20"></footer>
+<!-- End price Area -->
 <script src="../../js/vendor/jquery-2.2.4.min.js"></script>
 <script src="../../js/popper.min.js"></script>
 <script src="../../js/vendor/bootstrap.min.js"></script>
