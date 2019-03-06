@@ -95,12 +95,16 @@ if(mysqli_num_rows($result1)>0)
         <br><div class="row">
             <div class="map-wrap" style="width:100%; height: 445px; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
                 <embed style="width:100%; height: 400px; play="true" loop="false" menu="true" src="<?php echo $path; ?>">
+				<b>Video File</b>
 				<input type="file" name="videoFile" >
 				<input type="hidden" name="videoFile_tmp" value = "<?php echo $path; ?>" >
+				<b>
+				Thumbnail
+				</b>
+				<input type="file" name="thumbnailFile" >
+				<input type="hidden" name="thumbnailFile_tmp" value = "<?php echo $path; ?>" >
+				<br><br>
             </div>
-			
-				
-			
         </div>
 		
         <div class="row d-flex justify-content-center">
@@ -110,15 +114,21 @@ if(mysqli_num_rows($result1)>0)
 				</textarea>
             </div>
         </div>
+		
+    </div><div class="container">
 		 <button id="btn_submit" name="save_video" class="primary-btn text-uppercase text-center" style="float:right">SAVE VIDEO</button>
-    </div>
+		 </div>
 	</form>
 </section>
 <br><br><br>
 
 <hr>
 <section  class="price-area pt-20 pb-20">
+<div class="container">
 <h1 style="text-align:center">Exam</h1>
+<a href="#" class="genric-btn info radius" style="float:right;"  data-toggle="modal" data-target="#addQuestionModal" >Add Question</a>
+</div>	
+<br>		
 <br>
     <form class="form-wrap" action="checkUserAnswer.php" method="POST">
         <div class="container" style="width:90%; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
@@ -139,7 +149,7 @@ if(mysqli_num_rows($result1)>0)
                         $evalId = $row2['id'];
                         ?>
                         <div class="col-lg-12">
-                            <div class="single-price">
+                            <div class="single-price pt-5 pb-0">
                                 <h4 class="text-uppercase">
 								<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>" value="<?php echo $row2['question']?>"></h4>
                                 <ul class="price-list">
@@ -163,6 +173,8 @@ if(mysqli_num_rows($result1)>0)
                                     }
                                     ?>
                                 </ul>
+								<a href="#" class="genric-btn success radius" style="float:left;"  data-toggle="modal" data-target="#addChoiceModal" onclick="choicesIDChange(<?php echo $row2['id']; ?>)" >Add Choices</a>
+								<br><br><hr>
                             </div>
                         </div>
 
@@ -184,67 +196,42 @@ if(mysqli_num_rows($result1)>0)
     </form>
 </section>
 
-
-
-<section id="exam_collapse" class="price-area pt-20 pb-20">
-    <form class="form-wrap" action="checkUserAnswer.php" method="POST">
-        <div class="container" style="width:100%; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
-            <div class="row d-flex justify-content-center">
-                <div class="menu-content col-lg-8">
-                </div>
-            </div>
-            <div class="row">
-                <?php
-                $sql2 = "SELECT A.id, A.question
-                    FROM evaluation A
-                    INNER JOIN video B ON A.videoID = B.id
-                    WHERE A.videoID ='$video_id'
-                    ORDER BY RAND()";
-                $result2 = mysqli_query($con, $sql2);
-                if(mysqli_num_rows($result2)>0)
-                {
-                    while($row2 = mysqli_fetch_array($result2)){
-                        $evalId = $row2['id'];
-                        ?>
-                        <div class="col-lg-12">
-                            <div class="single-price">
-                                <h4 class="text-uppercase"><?php echo $row2['question']?></h4>
-                                <ul class="price-list">
-                                    <?php
-                                    $sql3 = "SELECT B.id, B.choice
-                                        FROM evaluation A
-                                        INNER JOIN evaluation_choices B ON A.id = B.evaluationID
-                                        WHERE A.id = '$evalId'
-                                        ORDER BY RAND()";
-                                    $result3 = mysqli_query($con, $sql3);
-                                    if(mysqli_num_rows($result3)>0)
-                                    {
-                                        while($row3 = mysqli_fetch_array($result3)){
-                                            ?>
-                                            <li class="d-flex justify-content-between align-items-center">
-                                                <label class="text-uppercase">
-                                                    <input style="height: 16px; width: 16px" type="radio" name="choice_q[<?php echo $evalId ?>]" value="<?php echo $row3['id'] ?>"> <?php echo $row3['choice'] ?>
-                                                </label>
-                                            </li>
-                                        <?php
-                                        }
-                                    }
-                                    ?>
-                                </ul>
-                            </div>
-                        </div>
-
-                    <?php
-                    }
-                }
-                ?>
-            </div>
-            <div class="row d-flex justify-content-center">
-                <button id="btn_submit" name="exam_submit" class="primary-btn text-uppercase text-center">SUBMIT</button>
-            </div>
-        </div>
-    </form>
-</section>
+<div class="modal animated zoomIn" id="addQuestionModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<form class="form-horizontal" action="addQuestion.php?videoID=<?php echo $video_id; ?>" method=post> 
+							<div class="modal-header">
+							<h3 style="text-align:center">Add Question</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								<textarea class="form-control" name="questionTxt" placeholder="Question" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Question'" required></textarea>
+								<br>
+								<button type="submit" class="btn btn-primary"  style="width:100%" name="residentSubmit">Save</button>
+								
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+<div class="modal animated zoomIn" id="addChoiceModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<form class="form-horizontal" action="addChoice.php" method=post id=addChoiceForm > 
+							<div class="modal-header">
+							<h3 style="text-align:center">Add Choices</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								<input type=text class="form-control" name="choiceTxt" placeholder="Choices" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Choices'" required>
+								<br>
+								<button type="submit" class="btn btn-primary"  style="width:100%" name="residentSubmit">Save</button>
+								
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 <footer class="footer-area section-gap pt-20"></footer>
 
 
@@ -270,5 +257,8 @@ if(mysqli_num_rows($result1)>0)
         $('#exam_collapse').slideToggle('slow');
     });
 	
-	function changeElement()
+	function choicesIDChange(id)
+	{
+		document.getElementById("addChoiceForm").action = "addChoice.php?videoID=<?php echo $video_id; ?>&questionID="+id;
+	}
 </script>

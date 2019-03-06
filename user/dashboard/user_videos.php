@@ -121,7 +121,7 @@ if(mysqli_num_rows($result)>0)
                     <div class="single-destinations video-box" style="box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.8);">
                         <div class="thumb relative">
                             <div class="overlay overlay-bg"></div>
-                            <img class="content-image img-fluid d-block mx-auto" src="<?php echo "../../" . $row['thumbnail']; ?>" alt="">
+                            <img class="content-image img-fluid d-block mx-auto" src="<?php echo $row['thumbnail']; ?>" alt="">
                         </div>
                         <div class="details">
                             <h4 class="d-flex justify-content-center">
