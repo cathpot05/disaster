@@ -133,7 +133,7 @@ include "../sessionAdmin.php";
 											<span>3</span>
 										</li>
 										<li class="d-flex justify-content-between align-items-center">
-											<a href="#" class="genric-btn info circle" style="float:right; margin-right: 20px; width:100%"  data-toggle="modal" data-target="#addStudentModal" >Update</a>
+											<a href="updateVideo.php?videoID=<?php echo $row['id']; ?>" class="genric-btn info circle" style="float:right; margin-right: 20px; width:100%"  >Update</a>
 					
 										</li>
 										<li class="d-flex justify-content-between align-items-center">
