@@ -35,6 +35,7 @@ if(isset($_POST['exam_submit'])){
             VALUES('$user_cert_ID','$scoreCounter', '$date')";
         if(mysqli_query($con, $user_sql)){
             //echo "Records inserted successfully.";
+            addLogs($con,$userId, 'user', 'Take exam on videoID '. $videoId);
         } else{
             echo "ERROR: Could not able to execute $user_sql. " . mysqli_error($con);
         }

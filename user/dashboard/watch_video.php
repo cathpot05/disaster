@@ -24,6 +24,7 @@ else{
             VALUES('$userId', '$video_id', '2019', 1, NULL, '$date', 1)";
     if(mysqli_query($con, $user_sql)){
         //echo "Records inserted successfully.";
+        addLogs($con,$userId, 'user', 'Watched VideoID of '. $video_id);
     } else{
         echo "ERROR: Could not able to execute $user_sql. " . mysqli_error($con);
     }
@@ -84,8 +85,11 @@ else{
                     <li><a href="evaluation.php">Evaluation History</a></li>
                     <li class="menu-has-children"><a href="#">Account Settings</a>
                         <ul>
-                            <li><a href="#">Modify Account Details</a></li>
-                            <li><a href="#">Change Password</a></li>
+                            <li>
+                                <a href="#" data-toggle="modal" data-target="#editStudentModal" onclick="changeID(<?php echo $userId; ?>, 'edit')">Modify Account Details</a>
+                            </li>
+                            <li><a href="#" data-toggle="modal" data-target="#changePasswordModal" onclick="changeID(<?php echo $userId; ?>, 'changePass')">Change Password</a></li>
+                            <li><a href="../logoutSessionUser.php">Log out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -195,6 +199,44 @@ if(mysqli_num_rows($result1)>0)
         </div>
     </form>
 </section>
+<div class="modal animated zoomIn" id="editStudentModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 style="text-align:center">Edit Student</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" id="editStudentForm">
+                <form class="form-horizontal" action="editStudent.php" method=post >
+                    <input type="text" class="form-control"  name="studNoTxt" placeholder="Student No." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Student No. '"><br>
+                    <input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+                    <input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '"><br>
+                    <input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '"><br>
+                    <button type="submit" name="registerSubmit" class="genric-btn info text-uppercase form-control">Save</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal animated zoomIn" id="changePasswordModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 style="text-align:center">Change Password</h3>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+            </div>
+            <div class="modal-body" id="changePassForm">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <footer class="footer-area section-gap pt-20"></footer>
 
 
@@ -215,8 +257,37 @@ if(mysqli_num_rows($result1)>0)
 <script src="../../js/main.js"></script>
 </body>
 </html>
-<script>
+<script type="text/javascript">
     $('#btn_view_exam').click(function(){
         $('#exam_collapse').slideToggle('slow');
     });
+</script>
+<script type="text/javascript">
+    function changeID(newID,type){
+        var xhr;
+        if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
+        else xhr = new ActiveXObject("Microsoft.XMLHTTP"); 	// for IE
+        var url = 'changeID.php?id='+newID+'&actiontype='+type;
+        xhr.open('GET', url, false);
+        xhr.onreadystatechange = function () {
+            if(type==='edit')
+            {
+                document.getElementById("editStudentForm").innerHTML = xhr.responseText;
+            }
+            else if(type==='changePass')
+            {
+                document.getElementById("changePassForm").innerHTML = xhr.responseText;
+            }
+        }
+        xhr.send();
+        // ajax stop
+        return false;
+    }
+
+    /*function checkPassFunction(){
+     alert("test");
+     var pass = $("input[name=txtPass]").val();
+     var pass1 = $("input[name=txtConfirmPass]").val();
+     }*/
+
 </script>
