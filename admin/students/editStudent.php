@@ -14,12 +14,12 @@ $sql = "Update user SET studNo = '$studNo', name = '$name', email = '$email', us
 	{
 			addLogs($con,$adminID, 'admin', 'Updated Student Information');
 			 echo "<script>alert('Update Successful');
-			window.location.href = 'student.php' </script>";	
+			window.location.href = 'student.php' </script>";
 	}
 	else
 	{
 			echo "<script>alert('error');
-			window.location.href = 'student.php' </script>";	
+			window.location.href = 'student.php' </script>";
 	}
 
 
