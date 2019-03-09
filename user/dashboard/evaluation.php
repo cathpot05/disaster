@@ -156,13 +156,6 @@ if(mysqli_num_rows($result)>0)
                 <button type="button" class="close" data-dismiss="modal">×</button>
             </div>
             <div class="modal-body" id="editStudentForm">
-                <form class="form-horizontal" action="editStudent.php" method=post >
-                    <input type="text" class="form-control"  name="studNoTxt" placeholder="Student No." onfocus="this.placeholder = ''" onblur="this.placeholder = 'Student No. '"><br>
-                    <input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
-                    <input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '"><br>
-                    <input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '"><br>
-                    <button type="submit" name="registerSubmit" class="genric-btn info text-uppercase form-control">Save</button>
-                </form>
             </div>
 
         </div>
@@ -225,10 +218,13 @@ if(mysqli_num_rows($result)>0)
         return false;
     }
 
-    /*function checkPassFunction(){
-     alert("test");
-     var pass = $("input[name=txtPass]").val();
-     var pass1 = $("input[name=txtConfirmPass]").val();
-     }*/
+    function validateForm() {
+        var pass = document.forms["changePassForm"]["txtPass"].value;
+        var pass1 = document.forms["changePassForm"]["txtConfirmPass"].value;
+        if (pass != pass1) {
+            alert("Password did not match");
+            return false;
+        }
+    }
 
 </script>
