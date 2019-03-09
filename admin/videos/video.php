@@ -1,6 +1,7 @@
 <?php
 include "../../connect.php";
 include "../sessionAdmin.php";
+$userId = $_SESSION['adminID'];
 ?>
 
 	<!DOCTYPE html>
@@ -57,8 +58,8 @@ include "../sessionAdmin.php";
 				          <li><a href="../logs/log.php">Activity Logs</a></li>
 				          <li class="menu-has-children"><a href=#>Account</a>
 				            <ul>
-				              <li><a href="../updateInfo/updateinfo.php">Update Info</a></li>
-				              <li><a href="../changePassword/changePassword.php">Change Password</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#editProfileModal" onclick="changeIDprofile(<?php echo $userId; ?>, 'edit_prof')">Update Info</a></li>
+                                <li><a href="#" data-toggle="modal" data-target="#changePasswordModal" onclick="changeIDprofile(<?php echo $userId; ?>, 'changePass')">Change Password</a></li>
 							  <li><a href="../logoutSessionAdmin.php">Logout</a></li>
 				            </ul>
 				          </li>	
@@ -196,6 +197,37 @@ include "../sessionAdmin.php";
 				</div>
 			</div>
 			<br><br>
+            <div class="modal animated zoomIn" id="editProfileModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 style="text-align:center">Edit Profile</h3>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body" id="editProfile">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal animated zoomIn" id="changePasswordModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 style="text-align:center">Change Password</h3>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body" id="changePassForm">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
 			<footer class="footer-area">
 				<div class="container">
 
@@ -235,12 +267,41 @@ include "../sessionAdmin.php";
 						else if(type==='delete')
 						  {
 							 document.getElementById("deleteVideoForm").action = "deleteVideo.php?id="+xhr.responseText+"";
-						 }					 
+						 }
 					}
 					xhr.send();
 					// ajax stop
 					return false;
 			}
+            function changeIDprofile(newID,type){
+                var xhr;
+                if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
+                else xhr = new ActiveXObject("Microsoft.XMLHTTP"); 	// for IE
+                var url = '../students/changeID.php?id='+newID+'&actiontype='+type;
+                xhr.open('GET', url, false);
+                xhr.onreadystatechange = function () {
+                   if(type==='edit_prof')
+                    {
+                        document.getElementById("editProfile").innerHTML = xhr.responseText;
+                    }
+                    else if(type==='changePass')
+                    {
+                        document.getElementById("changePassForm").innerHTML = xhr.responseText;
+                    }
+                }
+                xhr.send();
+                // ajax stop
+                return false;
+            }
+
+            function validateForm() {
+                var pass = document.forms["changePassForm"]["txtPass"].value;
+                var pass1 = document.forms["changePassForm"]["txtConfirmPass"].value;
+                if (pass != pass1) {
+                    alert("Password did not match");
+                    return false;
+                }
+            }
 			</script>
 			
 		</body>

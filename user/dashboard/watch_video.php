@@ -30,9 +30,6 @@ else{
     }
 }
 
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
@@ -110,7 +107,7 @@ else{
     </div>
 </section>
 <?php
-$sql1 = "Select * from video where id='$video_id'";
+$sql1 = "Select * from video where id='$video_id' and status = 1";
 $result1 = mysqli_query($con, $sql1);
 if(mysqli_num_rows($result1)>0)
 {
