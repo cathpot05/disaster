@@ -182,12 +182,7 @@ $userId = $_SESSION['adminID'];
                             <button type="button" class="close" data-dismiss="modal">×</button>
                         </div>
                         <div class="modal-body" id="editProfile">
-                            <form class="form-horizontal" action="../updateInfo/updateinfo.php" method=post >
-                                <input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
-                                <input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '"><br>
-                                <input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '"><br>
-                                <button type="submit" name="registerSubmit" class="genric-btn info text-uppercase form-control">Save</button>
-                            </form>
+
                         </div>
 
                     </div>
@@ -258,4 +253,12 @@ $userId = $_SESSION['adminID'];
         return false;
     }
 
+    function validateForm() {
+        var pass = document.forms["changePassForm"]["txtPass"].value;
+        var pass1 = document.forms["changePassForm"]["txtConfirmPass"].value;
+        if (pass != pass1) {
+            alert("Password did not match");
+            return false;
+        }
+    }
 </script>

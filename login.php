@@ -131,18 +131,18 @@ else if(isset($_POST['registerSubmit']))
 							</ul>
 							<div class="tab-content" id="myTabContent">
 							  <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
-								<form class="form-wrap" action="login.php" method="post">
-									<input type="text" class="form-control" name="usernameTxt" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">									
-									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password '">
+								<form class="form-wrap" name="loginForm" action="login.php" method="post">
+									<input type="text" required class="form-control" name="usernameTxt" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">
+									<input type="password" required class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password '">
 									<button type="submit" name="loginSubmit" class="primary-btn text-uppercase" >Login</button>									
 								</form>
 							  </div>
 							  <div class="tab-pane fade" id="register" role="tabpanel" aria-labelledby="register-tab">
 								<form class="form-wrap" action="login.php" method="post">
-									<input type="text" class="form-control" name="studNoTxt" placeholder="Student No. " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Student No. '">									
-									<input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '">
-									<input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '">
-									<input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">
+									<input type="text" required class="form-control" name="studNoTxt" placeholder="Student No. " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Student No. '">
+									<input type="text" required class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '">
+									<input type="email" required class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '">
+									<input type="text" required class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '">
 									<input type="password" class="form-control" name="passwordTxt" placeholder="Password " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password '">		
 									<button type="submit" name="registerSubmit" class="primary-btn text-uppercase" >Register</button>									
 								</form>							  	
@@ -178,3 +178,6 @@ else if(isset($_POST['registerSubmit']))
 			<script src="js/main.js"></script>	
 		</body>
 	</html>
+    <script type="text/javascript">
+
+    </script>
