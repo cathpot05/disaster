@@ -129,9 +129,9 @@ if(mysqli_num_rows($result1)>0)
 <a href="#" class="genric-btn info radius" style="float:right;"  data-toggle="modal" data-target="#addQuestionModal" >Add Question</a>
 </div>	
 <br>		
-<br>
+<br><br>
     <form class="form-wrap" action="checkUserAnswer.php" method="POST">
-        <div class="container" style="width:90%; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
+        <div class="container" style="width:90%; box-shadow: 0px 10px 10px 0px rgba(60, 64, 143, 0.3);">
             <div class="row d-flex justify-content-center">
                 <div class="menu-content col-lg-8">
                 </div>
@@ -141,7 +141,7 @@ if(mysqli_num_rows($result1)>0)
                 $sql2 = "SELECT A.id, A.question
                     FROM evaluation A
                     INNER JOIN video B ON A.videoID = B.id
-                    WHERE A.videoID ='$video_id'";
+                    WHERE A.videoID ='$video_id' and A.status = 1";
                 $result2 = mysqli_query($con, $sql2);
                 if(mysqli_num_rows($result2)>0)
                 {
@@ -149,25 +149,32 @@ if(mysqli_num_rows($result1)>0)
                         $evalId = $row2['id'];
                         ?>
                         <div class="col-lg-12">
+						<button type="button" style="float:right; margin:5px; padding:0" class="close" data-toggle="modal" data-target="#deleteQuestionModal" onclick="deleteQuestionID(<?php echo $row2['id']; ?>)"><i class="fa fa-times" aria-hidden="true"></i></button>
                             <div class="single-price pt-5 pb-0">
+							
                                 <h4 class="text-uppercase">
-								<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>" value="<?php echo $row2['question']?>"></h4>
-                                <ul class="price-list">
+								<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>" value="<?php echo $row2['question']?>">
+								</h4>
+                               
+								<ul class="price-list">
                                     <?php
                                     $sql3 = "SELECT B.id, B.choice
                                         FROM evaluation A
                                         INNER JOIN evaluation_choices B ON A.id = B.evaluationID
-                                        WHERE A.id = '$evalId'";
+                                        WHERE A.id = '$evalId' and B.status = 1";
                                     $result3 = mysqli_query($con, $sql3);
                                     if(mysqli_num_rows($result3)>0)
                                     {
                                         while($row3 = mysqli_fetch_array($result3)){
                                             ?>
                                             <li class="d-flex justify-content-between align-items-center">
-                                                <label class="text-uppercase">
+                                                <p><label class="text-uppercase">
 												<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>_choice_<?php echo $row3['id']; ?>" value="<?php echo $row3['choice'] ?>">
-                                                </label>
-                                            </li>
+												</label>
+												<button type="button" style="float:right; margin-left:10px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteChoiceModal" onclick="deleteChoiceID(<?php echo $row3['id'];?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+												
+												</p></li>
+											
                                         <?php
                                         }
                                     }
@@ -232,6 +239,44 @@ if(mysqli_num_rows($result1)>0)
 					</div>
 				</div>
 			</div>
+			
+			<div class="modal animated zoomIn" id="deleteQuestionModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<form class="form-horizontal" action="deleteQuestion.php" method=post id="deleteQuestionForm"> 
+							<div class="modal-header">
+							<h3 style="text-align:center">Delete Question</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete this question?</p>	
+								<br>
+								<button type="submit" class="btn btn-primary" style="width:45%" name="residentSubmit">Yes</button>
+								<button class="btn btn-default" data-dismiss="modal" style="width:45%; float: right">Cancel</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal animated zoomIn" id="deleteChoiceModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<form class="form-horizontal" action="deleteChoice.php" method=post id="deleteChoiceForm"> 
+							<div class="modal-header">
+							<h3 style="text-align:center">Delete Choice</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure you want to delete this choice?</p>	
+								<br>
+								<button type="submit" class="btn btn-primary" style="width:45%" name="residentSubmit">Yes</button>
+								<button class="btn btn-default" data-dismiss="modal" style="width:45%; float: right">Cancel</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 <footer class="footer-area section-gap pt-20"></footer>
 
 
@@ -260,5 +305,15 @@ if(mysqli_num_rows($result1)>0)
 	function choicesIDChange(id)
 	{
 		document.getElementById("addChoiceForm").action = "addChoice.php?videoID=<?php echo $video_id; ?>&questionID="+id;
+	}
+	
+	function deleteQuestionID(id)
+	{
+		document.getElementById("deleteQuestionForm").action = "deleteQuestion.php?videoID=<?php echo $video_id; ?>&questionID="+id;
+	}
+	
+	function deleteChoiceID(id)
+	{
+		document.getElementById("deleteChoiceForm").action = "deleteChoice.php?videoID=<?php echo $video_id; ?>&choiceID="+id;
 	}
 </script>
