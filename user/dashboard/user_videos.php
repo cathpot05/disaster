@@ -2,6 +2,7 @@
 include "../../connect.php";
 include "../sessionUser.php";
 $userId = $_SESSION['userID'];
+$date = date("Y-m-d H:i:s");
 $sql = "Select * from user where id='$userId'";
 $result = mysqli_query($con, $sql);
 if(mysqli_num_rows($result)>0)
@@ -94,25 +95,42 @@ if(mysqli_num_rows($result)>0)
     <div class="container">
         <div class="row">
         <?php
-        $sql1 = "Select A.*, COUNT(B.id) AS 'vidcount'
+        /*$sql1 = "Select A.*, COUNT(B.id) AS 'vidcount'
                 from video A
-                INNER JOIN evaluation B ON A.id = B.videoID";
+                INNER JOIN evaluation B ON A.id = B.videoID
+                GROUP BY A.id";*/
+        $sql1 = "Select A.*, B.id AS 'sV'
+                from video A
+                INNER JOIN schedule_video B ON A.id = B.videoID
+                INNER JOIN schedule C ON B.scheduleID = C.id
+                WHERE '$date' BETWEEN C.startDate AND C.endDate AND A.status = 1";
         $result1 = mysqli_query($con, $sql1);
         if(mysqli_num_rows($result1)>0)
         {
             while($row = mysqli_fetch_array($result1)){
-                $sql2 = "SELECT A.id, B.scoreStatus
+                $vidID = $row['id'];
+                /*$sql2 = "SELECT A.id, B.scoreStatus
                         FROM user A
                         LEFT JOIN user_certificates B ON B.userID = A.id
                         LEFT JOIN evaluation C ON C.videoID = B.videoID
                         LEFT JOIN video D ON B.videoID = D.id
-                        WHERE A.id = '$userId'";
+                        WHERE A.id = '$userId'";*/
+
+                 $sql2 = "SELECT A.id, B.scoreStatus, D.startDate, D.endDate, C.scheduleID
+                        FROM user A
+                        LEFT JOIN user_certificates B ON B.userID = A.id
+                        LEFT JOIN schedule_video C ON B.schedule_videoID = C.id
+                        LEFT JOIN schedule D ON C.scheduleID = D.id
+                        WHERE A.id = '$userId' AND C.videoID = '$vidID' AND '$date' BETWEEN D.startDate AND D.endDate";
                 $result2 = mysqli_query($con, $sql2);
                 if(mysqli_num_rows($result2)>0)
                 {
                     while($row2 = mysqli_fetch_array($result2)){
                         $scoreStatus = $row2['scoreStatus'];
                     }
+                }
+                else{
+                    $scoreStatus = '';
                 }
                 ?>
 
@@ -121,7 +139,7 @@ if(mysqli_num_rows($result)>0)
                     <div class="single-destinations video-box" style="box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.8);">
                         <div class="thumb relative">
                             <div class="overlay overlay-bg"></div>
-                            <img class="content-image img-fluid d-block mx-auto" src="<?php echo $row['thumbnail']; ?>" alt="">
+                            <img style="width: 50%; height: 50%" class="content-image img-fluid d-block mx-auto" src="<?php echo $row['thumbnail']; ?>" alt="">
                         </div>
                         <div class="details">
                             <h4 class="d-flex justify-content-center">
@@ -134,17 +152,17 @@ if(mysqli_num_rows($result)>0)
                             <ul class="package-list">
                                 <li class="d-flex justify-content-between align-items-center">
                                     <span><b>Watch Video</b></span>
-                                    <a href="watch_video.php?videoID=<?php echo $row['id']?>" class="genric-btn info circle small">WATCH</a>
+                                    <a href="watch_video.php?videoID=<?php echo $row['id']?>&&sV=<?php echo $row['sV']?>" class="genric-btn info circle small">WATCH</a>
                                 </li>
                                 <li class="d-flex justify-content-between align-items-center">
                                     <span><b>Take the Exam</b></span>
                                     <?php
-                                    if($scoreStatus == null){
+                                    if($scoreStatus == null || $scoreStatus == ""){
                                     ?>
-                                        <a href="watch_video.php?videoID=<?php echo $row['id']?>" class="genric-btn info circle small">GO TO EXAM</a>
+                                        <a href="watch_video.php?videoID=<?php echo $row['id']?>&&sV=<?php echo $row['sV']?>" class="genric-btn info circle small">GO TO EXAM</a>
                                     <?php
                                     }else{
-                                        if($scoreStatus >= ($row['vidcount'] / 2)){
+                                        if($scoreStatus >= 50){
                                             $statusScore = "PASSED";
                                             $color = "green";
                                         }else{
@@ -152,7 +170,7 @@ if(mysqli_num_rows($result)>0)
                                             $color = "red";
                                         }
                                         ?>
-                                        <span style="color: <?php echo $color; ?>; font-weight: bold;"><?php echo $statusScore; ?> </span> | <a href="watch_video.php?videoID=<?php echo $row['id']?>" class="genric-btn success circle small">RE-TAKE</a>
+                                        <span style="color: <?php echo $color; ?>; font-weight: bold;"><?php echo $statusScore; ?> </span> | <a href="watch_video.php?videoID=<?php echo $row['id']?>&&sV=<?php echo $row['sV']?>" class="genric-btn success circle small">RE-TAKE</a>
                                         <?php
                                     }
 
