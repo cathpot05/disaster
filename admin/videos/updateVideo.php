@@ -3,7 +3,11 @@ include "../../connect.php";
 include "../sessionAdmin.php";
 $video_id = $_GET['videoID'];
 //check if record exist
-
+$editQuestionID=0;
+if(isset($_GET['editQuestionID']))
+{
+	$editQuestionID = $_GET['editQuestionID'];
+}
 
 ?>
 <!DOCTYPE html>
@@ -107,12 +111,15 @@ if(mysqli_num_rows($result1)>0)
             </div>
         </div>
 		
-        <div class="row d-flex justify-content-center">
-            <div class=" pb-20 pt-20 col-lg-8 text-center">
-               <textarea class="form-control" rows=7 name="descriptionTxt" placeholder="Description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Description'" required> 
-				<?php echo $desc; ?>
-				</textarea>
-            </div>
+        <div class="row">
+			<div class="col-lg-2">
+			</div>
+				<div class="pb-20 pt-20 col-lg-8">
+				   <textarea class="form-control" rows=7 name="descriptionTxt" placeholder="Description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Description'" required> 
+					<?php echo $desc; ?>
+					</textarea>
+				</div>
+			
         </div>
 		
     </div><div class="container">
@@ -149,11 +156,39 @@ if(mysqli_num_rows($result1)>0)
                         $evalId = $row2['id'];
                         ?>
                         <div class="col-lg-12">
-						<button type="button" style="float:right; margin:5px; padding:0" class="close" data-toggle="modal" data-target="#deleteQuestionModal" onclick="deleteQuestionID(<?php echo $row2['id']; ?>)"><i class="fa fa-times" aria-hidden="true"></i></button>
-                            <div class="single-price pt-5 pb-0">
-							
+						<?php
+						if($editQuestionID == $evalId)
+						{
+							?>
+							<?php
+						
+						}
+						else
+						{
+							?>
+							<button type="button" style="float:right; margin:5px; padding:0" class="close" data-toggle="modal" data-target="#deleteQuestionModal" onclick="deleteQuestionID(<?php echo $row2['id']; ?>)"><i class="fa fa-times" aria-hidden="true"></i></button>
+							<i style="float:right; margin:10px; padding:0; font-size: 1.5em" class="fa fa-edit close" aria-hidden="true" onclick="editQuestionID(<?php echo $row2['id']; ?>)" > </i>
+							<?php
+						}
+						
+						
+						?>
+						
+                            <div class="single-price pt-5 pb-0" style=" <?php if($editQuestionID == $evalId) echo "background-color:white"; ?>">
                                 <h4 class="text-uppercase">
+								<?php 
+								if($editQuestionID == $evalId)
+								{
+								?>
 								<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>" value="<?php echo $row2['question']?>">
+								<?php 
+								}
+								else
+								{
+									echo $row2['question'];
+								}
+								?>
+								
 								</h4>
                                
 								<ul class="price-list">
@@ -166,23 +201,61 @@ if(mysqli_num_rows($result1)>0)
                                     if(mysqli_num_rows($result3)>0)
                                     {
                                         while($row3 = mysqli_fetch_array($result3)){
-                                            ?>
-                                            <li class="d-flex justify-content-between align-items-center">
-                                                <p><label class="text-uppercase">
-												<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>_choice_<?php echo $row3['id']; ?>" value="<?php echo $row3['choice'] ?>">
-												</label>
-												<button type="button" style="float:right; margin-left:10px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteChoiceModal" onclick="deleteChoiceID(<?php echo $row3['id'];?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
-												
-												</p></li>
+                                            if($editQuestionID == $evalId)
+											{
+												?>
+													<li class="d-flex justify-content-between align-items-center">
+														<p>
+															<label class="text-uppercase">
+																<input type="text" class="form-control" name="question_<?php echo $row2['id']; ?>_choice_<?php echo $row3['id']; ?>" value="<?php echo $row3['choice'] ?>">
+															</label>
+															
+														</p>
+													</li>
+												<?php	
+											}
+											else
+											{
+												?>
+													<li class="d-flex justify-content-between align-items-center">
+														<p>
+															<label class="text-uppercase">
+																<?php echo $row3['choice'] ?>
+															</label>
+															<button type="button" style="float:right; margin-left:10px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteChoiceModal" onclick="deleteChoiceID(<?php echo $row3['id'];?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+														</p>
+													</li>
+												<?php	
+											}	
 											
-                                        <?php
+											
+											
                                         }
                                     }
                                     ?>
                                 </ul>
-								<a href="#" class="genric-btn success radius" style="float:left;"  data-toggle="modal" data-target="#addChoiceModal" onclick="choicesIDChange(<?php echo $row2['id']; ?>)" >Add Choices</a>
+								
+								<?php if($editQuestionID == $evalId)
+											{
+												?>
+								
+								
+								 <button id="btn_submit" name="save_video" class="primary-btn text-uppercase text-center" style="float:right; background-color:gray;">CANCEL</button>
+								 <button id="btn_submit" name="save_video" class="primary-btn text-uppercase text-center" style="float:right; margin-right: 10px;">SAVE</button>
+								<?php
+											}
+								else
+								{
+									?>
+									<a href="#" class="genric-btn success radius" style="float:left;"  data-toggle="modal" data-target="#addChoiceModal" onclick="choicesIDChange(<?php echo $row2['id']; ?>)" >Add Choices</a>
+								
+									<?php
+								}
+								?>
 								<br><br><hr>
+								
                             </div>
+							
                         </div>
 
                     <?php
@@ -194,7 +267,7 @@ if(mysqli_num_rows($result1)>0)
         </div>
 		<br>
 		<div class="container">
-		<button id="btn_submit" name="save_exam" class="primary-btn text-uppercase text-center" style="float: right">SAVE EXAM</button>
+		
 		</div><br><br>
             
 		
@@ -315,5 +388,11 @@ if(mysqli_num_rows($result1)>0)
 	function deleteChoiceID(id)
 	{
 		document.getElementById("deleteChoiceForm").action = "deleteChoice.php?videoID=<?php echo $video_id; ?>&choiceID="+id;
+	}
+	
+	function editQuestionID(id)
+	{
+		window.location.href = 'updateVideo.php?videoID=<?php echo $video_id; ?>&editQuestionID='+id;
+		
 	}
 </script>
