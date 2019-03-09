@@ -1,6 +1,7 @@
 <?php
 include "../../connect.php";
 include "../sessionAdmin.php";
+$userId = $_SESSION['adminID'];
 ?>
 
 	<!DOCTYPE html>
@@ -57,8 +58,8 @@ include "../sessionAdmin.php";
 				          <li><a href="../logs/log.php">Activity Logs</a></li>
 				          <li class="menu-has-children"><a href="">Account</a>
 				            <ul>
-				              <li><a href="../updateInfo/updateinfo.php">Update Info</a></li>
-				              <li><a href="../changePassword/changePassword.php">Change Password</a></li>
+				              <li><a href="#" data-toggle="modal" data-target="#editProfileModal" onclick="changeID(<?php echo $userId; ?>, 'edit_prof')">Update Info</a></li>
+				              <li><a href="#" data-toggle="modal" data-target="#changePasswordModal" onclick="changeID(<?php echo $userId; ?>, 'changePass')">Change Password</a></li>
 							  <li><a href="../logoutSessionAdmin.php">Logout</a></li>
 				            </ul>
 				          </li>	
@@ -171,6 +172,45 @@ include "../sessionAdmin.php";
 			<br>
 
 			<br><br>
+
+            <div class="modal animated zoomIn" id="editProfileModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 style="text-align:center">Edit Profile</h3>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body" id="editProfile">
+                            <form class="form-horizontal" action="../updateInfo/updateinfo.php" method=post >
+                                <input type="text" class="form-control" name="nameTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+                                <input type="text" class="form-control" name="emailTxt" placeholder="Email Address " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address '"><br>
+                                <input type="text" class="form-control" name="usernameTxt" placeholder="Username " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username '"><br>
+                                <button type="submit" name="registerSubmit" class="genric-btn info text-uppercase form-control">Save</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal animated zoomIn" id="changePasswordModal">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h3 style="text-align:center">Change Password</h3>
+                            <button type="button" class="close" data-dismiss="modal">×</button>
+                        </div>
+                        <div class="modal-body" id="changePassForm">
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
 			<footer class="footer-area">
 				<div class="container">
 
@@ -196,3 +236,26 @@ include "../sessionAdmin.php";
 			<script src="../../js/main.js"></script>	
 		</body>
 	</html>
+
+<script type="text/javascript">
+    function changeID(newID,type){
+        var xhr;
+        if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
+        else xhr = new ActiveXObject("Microsoft.XMLHTTP"); 	// for IE
+        var url = '../students/changeID.php?id='+newID+'&actiontype='+type;
+        xhr.open('GET', url, false);
+        xhr.onreadystatechange = function () {
+            if(type==='edit_prof')
+            {
+                document.getElementById("editProfile").innerHTML = xhr.responseText;
+            }
+            else if(type==='changePass')
+            {
+                document.getElementById("changePassForm").innerHTML = xhr.responseText;
+            }
+        }
+        xhr.send();
+        return false;
+    }
+
+</script>

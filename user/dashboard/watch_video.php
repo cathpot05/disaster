@@ -126,7 +126,7 @@ if(mysqli_num_rows($result1)>0)
     <div class="container">
         <div class="row">
             <div class="map-wrap" style="width:100%; height: 445px; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
-                <embed style="width:100%; height: 400px; play="true" loop="false" menu="true" src="<?php echo "../../".$path?>">
+                <embed style="width:100%; height: 400px; play="true" loop="false" menu="true" src="<?php echo $path?>">
             </div>
         </div>
         <div class="row d-flex justify-content-center">
