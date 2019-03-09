@@ -107,7 +107,7 @@ else{
     </div>
 </section>
 <?php
-$sql1 = "Select * from video where id='$video_id' and status = 1";
+$sql1 = "Select * from video where id='$video_id'";
 $result1 = mysqli_query($con, $sql1);
 if(mysqli_num_rows($result1)>0)
 {

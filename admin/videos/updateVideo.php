@@ -87,7 +87,7 @@ if(mysqli_num_rows($result1)>0)
     }
 }
 ?>
-<section class="destinations-area pt-20">
+<section class="destinations-area pt-20">z
 <form action="updateVideoDetails.php?id=<?php echo $video_id; ?>" method=post enctype = "multipart/form-data">
     <h1 class="pb-10 d-flex justify-content-center"><b>  </b></h1>
     <div class="container">
@@ -106,15 +106,15 @@ if(mysqli_num_rows($result1)>0)
 				<br><br>
             </div>
         </div>
-		
+
         <div class="row d-flex justify-content-center">
             <div class=" pb-20 pt-20 col-lg-8 text-center">
-               <textarea class="form-control" rows=7 name="descriptionTxt" placeholder="Description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Description'" required> 
+               <textarea class="form-control" rows=7 name="descriptionTxt" placeholder="Description" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Description'" required>
 				<?php echo $desc; ?>
 				</textarea>
             </div>
         </div>
-		
+
     </div><div class="container">
 		 <button id="btn_submit" name="save_video" class="primary-btn text-uppercase text-center" style="float:right">SAVE VIDEO</button>
 		 </div>
