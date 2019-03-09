@@ -2,6 +2,29 @@
 include "../../connect.php";
 include "../sessionUser.php";
 $userId = $_SESSION['userID'];
+$query = '';
+$year = '';
+if(isset($_GET['year']))
+{
+    $year = $_GET['year'];
+    $query = "SELECT B.score, D.name, B.dateCreated
+                    FROM user_certificates A
+                    INNER JOIN user_certificates_detail B ON A.id = B.userCertID
+                    INNER JOIN schedule_video C ON A.schedule_videoID = C.id
+                    INNER JOIN video D ON C.videoID = D.id
+                    INNER JOIN schedule E ON C.scheduleID = E.id
+                    WHERE A.userID = '$userId' AND YEAR(E.startDate) = '$year' AND YEAR(E.endDate) = '$year'";
+    //$query = "AND YEAR(E.startDate) = '$year' AND YEAR(E.endDate) = '$year'";
+}
+else{
+    $query= "SELECT B.score, D.name, B.dateCreated
+                    FROM user_certificates A
+                    INNER JOIN user_certificates_detail B ON A.id = B.userCertID
+                    INNER JOIN schedule_video C ON A.schedule_videoID = C.id
+                    INNER JOIN video D ON C.videoID = D.id
+                    INNER JOIN schedule E ON C.scheduleID = E.id
+                    WHERE A.userID = '$userId'";
+}
 $sql = "Select * from user where id='$userId'";
 $result = mysqli_query($con, $sql);
 if(mysqli_num_rows($result)>0)
@@ -94,17 +117,36 @@ if(mysqli_num_rows($result)>0)
             <div class="menu-content pb-70 col-lg-8">
                 <div class="title text-center">
                     <h1 class="mb-10">History of taken exam</h1>
+                    <select class="form-control" id="select_year" onchange="changeYear()">
+                    <?php
+                    $sql_year = "SELECT YEAR(A.startDate) AS 'year'
+                            FROM schedule A
+                            GROUP BY YEAR(A.startDate)";
+                    $result_year = mysqli_query($con, $sql_year);
+
+                    if(mysqli_num_rows($result_year)>0)
+                    {
+                        while($row_year = mysqli_fetch_array($result_year)){
+                    ?>
+                        <option value="<?php echo $row_year['year']; ?>"><?php echo $row_year['year']; ?></option>
+                        <?php
+                        }
+                    }
+                    ?>
+                    </select>
                 </div>
             </div>
         </div>
         <div class="row">
             <?php
-            $sql2 = "SELECT B.score, C.name, B.dateCreated,
+            /*$sql2 = "SELECT B.score, C.name, B.dateCreated,
                         (SELECT COUNT(id) FROM evaluation WHERE videoID = A.videoID) AS 'question_count'
                     FROM user_certificates A
                     INNER JOIN user_certificates_detail B ON A.id = B.userCertID
                     INNER JOIN video C ON A.videoID = C.id
-                    WHERE A.userID = '$userId'";
+                    WHERE A.userID = '$userId'";*/
+
+             $sql2 = $query;
             $result2 = mysqli_query($con, $sql2);
             if(mysqli_num_rows($result2)>0)
             {
@@ -112,8 +154,7 @@ if(mysqli_num_rows($result)>0)
                 $score = $row2['score'];
                 $title = $row2['name'];
                 $taken = $row2['dateCreated'];
-                $q_total = $row2['question_count'];
-                if($score >= ($q_total/2)){
+                if($score > 50){
                  $color = "text-success";
                  $status = "PASSED";
                 }else{
@@ -131,7 +172,7 @@ if(mysqli_num_rows($result)>0)
                         </li>
                         <li class="d-flex justify-content-between align-items-center">
                             <span class="font-weight-bold">Score</span>
-                            <span><?php echo $score ."/" .$q_total; ?></span>
+                            <span><?php echo $score; ?>%</span>
                         </li>
                         <li class="d-flex justify-content-between align-items-center">
                             <span class="font-weight-bold">Date Taken</span>
@@ -197,6 +238,15 @@ if(mysqli_num_rows($result)>0)
 </body>
 </html>
 <script type="text/javascript">
+    $( document ).ready(function() {
+        d = document.getElementById("select_year").value;
+        <?php
+        if($year == ''){
+            echo "window.location = 'evaluation.php?year='+d;";
+        }
+        ?>
+    });
+
     function changeID(newID,type){
         var xhr;
         if (window.XMLHttpRequest) xhr = new XMLHttpRequest(); // all browsers
@@ -226,5 +276,11 @@ if(mysqli_num_rows($result)>0)
             return false;
         }
     }
+
+    function changeYear(){
+        d = document.getElementById("select_year").value;
+        window.location = 'evaluation.php?year='+d;
+    }
+
 
 </script>

@@ -3,6 +3,7 @@ include "../../connect.php";
 include "../sessionUser.php";
 $userId = $_SESSION['userID'];
 $video_id = $_GET['videoID'];
+$sV = $_GET['sV'];
 $sql = "Select * from user where id='$userId'";
 $result = mysqli_query($con, $sql);
 if(mysqli_num_rows($result)>0)
@@ -12,7 +13,7 @@ if(mysqli_num_rows($result)>0)
     }
 }
 //check if record exist
- $check = "Select * from user_certificates where userID='$userId' AND videoID = '$video_id'";
+ $check = "Select * from user_certificates where userID='$userId' AND schedule_videoID = '$sV'";
 $result1 = mysqli_query($con, $check);
 if(mysqli_num_rows($result1)>0)
 {
@@ -20,8 +21,8 @@ if(mysqli_num_rows($result1)>0)
 }
 else{
     $date = date("Y-m-d H:i:s");
-    $user_sql = "INSERT INTO user_certificates (userID, videoID, year, isWatch, scoreStatus, dateCreated, status)
-            VALUES('$userId', '$video_id', '2019', 1, NULL, '$date', 1)";
+    $user_sql = "INSERT INTO user_certificates (userID, schedule_videoID, year, isWatch, scoreStatus, dateCreated, status)
+            VALUES('$userId', '$sV', '2019', 1, NULL, '$date', 1)";
     if(mysqli_query($con, $user_sql)){
         //echo "Records inserted successfully.";
         addLogs($con,$userId, 'user', 'Watched VideoID of '. $video_id);
@@ -139,6 +140,7 @@ if(mysqli_num_rows($result1)>0)
 
 <section id="exam_collapse" class="price-area pt-20 pb-20">
     <form class="form-wrap" action="checkUserAnswer.php" method="POST">
+        <input type="hidden" value="<?php echo $sV; ?>" name="txtSched">
         <div class="container" style="width:100%; box-shadow: 0px 10px 30px 0px rgba(60, 64, 143, 0.3);">
             <div class="row d-flex justify-content-center">
                 <div class="menu-content col-lg-8">
@@ -150,6 +152,7 @@ if(mysqli_num_rows($result1)>0)
                     FROM evaluation A
                     INNER JOIN video B ON A.videoID = B.id
                     WHERE A.videoID ='$video_id'
+                    AND A.status=1 AND B.status = 1
                     ORDER BY RAND()";
                 $result2 = mysqli_query($con, $sql2);
                 if(mysqli_num_rows($result2)>0)
@@ -165,7 +168,7 @@ if(mysqli_num_rows($result1)>0)
                                     $sql3 = "SELECT B.id, B.choice
                                         FROM evaluation A
                                         INNER JOIN evaluation_choices B ON A.id = B.evaluationID
-                                        WHERE A.id = '$evalId'
+                                        WHERE A.id = '$evalId' AND A.status=1 AND B.status = 1
                                         ORDER BY RAND()";
                                     $result3 = mysqli_query($con, $sql3);
                                     if(mysqli_num_rows($result3)>0)
