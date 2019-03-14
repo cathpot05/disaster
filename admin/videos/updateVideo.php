@@ -226,7 +226,7 @@ if(mysqli_num_rows($result1)>0)
 
 								<ul class="price-list">
                                     <?php
-                                    $sql3 = "SELECT B.id, B.choice
+                                    $sql3 = "SELECT B.id, B.choice, B.isCorrect
                                         FROM evaluation A
                                         INNER JOIN evaluation_choices B ON A.id = B.evaluationID
                                         WHERE A.id = '$evalId' and B.status = 1";
@@ -239,14 +239,18 @@ if(mysqli_num_rows($result1)>0)
                                             if($editQuestionID == $evalId)
 											{
 												?>
-													<li class="d-flex justify-content-between align-items-center">
-														<p>
-															<label class="text-uppercase">
+													<li class="d-flex  align-items-center">
+															<div class="primary-radio">
+																<input type="radio" name="choiceAnswer" id="default-radio_<?php echo $choiceCounter; ?>" value="<?php echo $row3['id']; ?>" <?php if($row3['isCorrect'] == 1) echo "checked"; ?> style="float:left; ">
+																<label for="default-radio_<?php echo $choiceCounter; ?>" ></label>
+															</div>
+															&nbsp;&nbsp;&nbsp;
+															<label class="text-uppercase" >
                                                                 <input type="hidden" class="form-control" name="choiceID_<?php echo $choiceCounter; ?>" value="<?php echo $row3['id'] ?>">
-                                                                <input type="text" class="form-control" name="choiceTxt_<?php echo $choiceCounter; ?>" value="<?php echo $row3['choice'] ?>">
+                                                                <input type="text" class="form-control"  name="choiceTxt_<?php echo $choiceCounter; ?>" value="<?php echo $row3['choice'] ?>">
 															</label>
 
-														</p>
+														
 													</li>
 												<?php
 											}
@@ -254,11 +258,22 @@ if(mysqli_num_rows($result1)>0)
 											{
 												?>
 													<li class="d-flex justify-content-between align-items-center">
-														<p>
+	
+															<p>
+													
 															<label class="text-uppercase">
 																<?php echo $row3['choice'] ?>
 															</label>
-															<button type="button" style="float:right; margin-left:10px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteChoiceModal" onclick="deleteChoiceID(<?php echo $row3['id'];?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+															<button type="button" style=" margin-left:10px;" class="btn btn-danger" data-toggle="modal" data-target="#deleteChoiceModal" onclick="deleteChoiceID(<?php echo $row3['id'];?>)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+															&nbsp;&nbsp;&nbsp;
+															<?php
+															
+															if($row3['isCorrect'] == 1)
+															{
+																echo "<i>Answer</i>";
+																
+															}
+															?>
 														</p>
 													</li>
 												<?php

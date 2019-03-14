@@ -2,6 +2,8 @@
 include "../../connect.php";
 include "../sessionAdmin.php";
 $userId = $_SESSION['adminID'];
+$date = date("Y-m-d H:i:s");
+$scheduleID = 0;
 ?>
 
 	<!DOCTYPE html>
@@ -93,10 +95,26 @@ $userId = $_SESSION['adminID'];
 						<h1>Animated videos</h1>
 					</div>
 					<div class="col-lg-6">
-					<a href="#" class="genric-btn info circle" style="float:right; margin-right: 20px;"  data-toggle="modal" data-target="#uploadModal" >Set Schedule</a>
+					<?php /*
+					$sqlSched = "SELECT *from schedule 
+							WHERE '$date' BETWEEN startDate AND endDate AND status = 1";
+							$resultSched = mysqli_query($con, $sqlSched);
+							if(mysqli_fetch_row($resultSched)>0)
+							{
+								
+								<a href="#" class="genric-btn info circle" style="float:right; margin-right: 20px;"  data-toggle="modal" data-target="#updateScheduleModal" >Update Schedule</a>
+								
+							}
+							else
+							{
+								
+								<a href="#" class="genric-btn info circle" style="float:right; margin-right: 20px;"  data-toggle="modal" data-target="#setScheduleModal" >Set Schedule</a>
+								
+							}
+					*/
+					?>
+					
 					<a href="#" class="genric-btn info circle" style="float:right; margin-right: 20px;"  data-toggle="modal" data-target="#uploadModal" >Upload Video</a>
-					
-					
 					</div>
 				</div>
 				<hr>
@@ -106,14 +124,20 @@ $userId = $_SESSION['adminID'];
 				<div class="container">					
 					<div class="row">
 					<?php
-					$sql = "Select *from video where status=1";
+					$sql = "Select A.*, B.id AS 'sV', C.id as sID
+							from video A
+							INNER JOIN schedule_video B ON A.id = B.videoID
+							INNER JOIN schedule C ON B.scheduleID = C.id
+							WHERE '$date' BETWEEN C.startDate AND C.endDate AND A.status = 1";
 					$result = mysqli_query($con, $sql);
 					while($row = mysqli_fetch_array($result)){
+						$scheduleID = $row['sID'];
 					?>
 						<div class="col-lg-4">
-							<div class="single-destinations">
-								<div class="thumb">
-									<img src="<?php echo $row['thumbnail']; ?>" alt="">
+							<div class="single-destinations video-box">
+								<div class="thumb relative">
+								  <div class="overlay overlay-bg"></div>
+									 <img style="width: 50%; height: 50%" class="content-image img-fluid d-block mx-auto" src="<?php echo $row['thumbnail']; ?>" alt="">
 								</div>
 								<div class="details">
 									<h4 style="font-weight: bold; text-align:center"><?php echo $row['name']; ?></h4>
@@ -151,7 +175,6 @@ $userId = $_SESSION['adminID'];
 					</div>
 				</div>	
 			</section>
-			
 			<div class="modal animated zoomIn" id="uploadModal">
 				<div class="modal-dialog" role="document">
 					<div class="modal-content">
@@ -173,6 +196,125 @@ $userId = $_SESSION['adminID'];
 								
 							</div>
 						</form>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal animated zoomIn" id="setScheduleModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+					<div class=row>
+						<div class="col-lg-12">
+						<form class="form-horizontal" action="setSchedule.php" method=post id="uploadForm"  enctype = "multipart/form-data"> 
+							<div class="modal-header">
+							<h3 style="text-align:center">Set Schedule</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								Start Date
+								<input type="datetime-local" class="form-control"  name="startDateTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+								End Date
+								<input type="datetime-local" class="form-control"  name="endDateTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+								<button type="submit" class="btn btn-primary"  style="width:100%" name="residentSubmit">Save</button>
+							</div>
+						</form>
+						
+						</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+			
+			
+			<div class="modal animated zoomIn" id="updateScheduleModal">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+					<div class=row>
+						<div class="col-lg-12">
+						<form class="form-horizontal" action="setSchedule.php" method=post id="uploadForm"  enctype = "multipart/form-data"> 
+							<div class="modal-header">
+							<h3 style="text-align:center">Update Schedule</h3>
+								<button type="button" class="close" data-dismiss="modal">×</button>
+							</div>
+							<div class="modal-body">
+								Start Date
+								<input type="datetime-local" class="form-control"  name="startDateTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+								End Date
+								<input type="datetime-local" class="form-control"  name="endDateTxt" placeholder="Name " onfocus="this.placeholder = ''" onblur="this.placeholder = 'Name '"><br>
+								<button type="submit" class="btn btn-primary"  style="width:100%" name="residentSubmit">Save</button>
+							</div>
+						</form>
+						
+						</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12">
+							<h4 style="border-bottom:1px solid #e6e6e6"><b>Current Videos</b></h4>
+							<br>
+							</div>
+							
+						<?php
+							$sql2 = "SELECT B.* from schedule_video A 
+							INNER JOIN video B ON A.videoID = B.id 
+							where A.scheduleID = $scheduleID";
+							$result2 = mysqli_query($con, $sql2);
+							if(mysqli_fetch_row($result2)>0)
+							{
+							while($row2 = mysqli_fetch_array($result2))
+							{
+								?>
+								<div class="col-lg-12">
+								<button class="genric-btn danger-border radius" style=" margin: 3px auto; float:left;"> 
+								<i class="fa fa-plus fa-fw"></i>
+								<?php
+								echo $row2['name'];
+								?>
+								</button>
+								</div>
+								<?php
+							}
+							}
+							else
+							{
+								?>
+								<div class="col-lg-12">&nbsp;&nbsp;&nbsp;
+								<?php
+								echo "none";	
+?>
+								</div>	
+<?php								
+							}
+							
+							?>
+							</div>
+							<div class="row">
+							<div class="col-lg-12">
+							<br>
+							<h4 style="border-bottom:1px solid #e6e6e6"><b>Available Videos</b></h4>
+							<br>
+							</div>
+							
+							<?php
+							$sql3 = "SELECT *from video 
+								where id NOT IN (Select videoID from schedule_video where scheduleID = $scheduleID)";
+							$result3 = mysqli_query($con, $sql3);
+							while($row3 = mysqli_fetch_array($result3))
+							{
+								?>
+								<div class="col-lg-12">
+								<button class="genric-btn success-border radius" style="margin-bottom: 3px; margin-left: 10px; padding-top: 1px; padding-bottom:1px;  float:left;"> 
+								<i class="fa fa-plus fa-fw"></i>
+								<?php
+								echo $row3['name'];
+								?>
+								
+								</button>
+								</div>
+								<?php
+							}
+						?>
+						</div>
 					</div>
 				</div>
 			</div>

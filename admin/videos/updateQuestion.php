@@ -5,16 +5,24 @@ $videoID = $_GET['videoID'];
 $questionID = $_GET['questionID'];
 $questionTxt = $_POST['questionTxt'];
 $choiceCounter = $_POST['choiceCounter'];
+$choiceAnswer = $_POST['choiceAnswer'];
 
 $sql = "Update evaluation SET question = '$questionTxt' where id = $questionID ";
 $result = mysqli_query($con, $sql);
 
 for($i=0; $i<$choiceCounter; $i++)
 {
+	
     $choiceID = $_POST['choiceID_'.$i];
     $choiceTxt = $_POST['choiceTxt_'.$i];
-
-    $sql = "Update evaluation_choices SET  choice= '$choiceTxt' where id = $choiceID ";
+	if($choiceAnswer == $choiceID)
+	{
+		$sql = "Update evaluation_choices SET  choice= '$choiceTxt', isCorrect=1 where id = $choiceID ";
+	}
+	else
+	{
+		$sql = "Update evaluation_choices SET  choice= '$choiceTxt', isCorrect=0 where id = $choiceID ";
+	}
     $result = mysqli_query($con, $sql);
 
 }
